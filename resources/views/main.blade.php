@@ -1,3 +1,3 @@
 <?php
-readfile(asset('/build/index.html'));
+    readfile('./index.html');
 ?>
