@@ -1,3 +1,9 @@
+/public/static
+/public/asset-manifest.json
+/public/favicon.ico
+/public/index.html
+/public/manifest.json
+/public/service-worker.js
 /vendor
 /.idea
 Homestead.json

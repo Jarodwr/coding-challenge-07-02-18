@@ -18,12 +18,15 @@ class ApiController extends Controller
         $page_object = json_decode($response->getBody());
 
         $page_of_people = array_map(function ($element){
-            return $element->{"name"};
+            $person = array();
+            $explodedUrl = explode("/", $element->{"url"});
+            $person["id"] = $explodedUrl[$explodedUrl.length];
+            $person["given_name"] = $element->{"name"};
+
+            return $person;
         }, $page_object->{"results"});
 
-        // return json_encode($page_of_people);
         return response()->json($page_of_people);
-        // return response()->json("ASKjdhaskjdhasjkdh");
     }
 
     //Getting all people
@@ -38,7 +41,12 @@ class ApiController extends Controller
             $page_object = json_decode($response->getBody());
 
             $page_of_people = array_map(function ($element) use (&$all_people) {
-                return $element->{"name"};
+                $person = array();
+                $explodedUrl = explode("/", $element->{"url"});
+                $person["id"] = $explodedUrl[count($explodedUrl)-2];
+                $person["given_name"] = $element->{"name"};
+    
+                return $person;
             }, $page_object->{"results"});
 
             //Append page of people

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "SWAPI Viewer",
+  "name": "Star Wars Api Viewer",
   "icons": [
     {
       "src": "favicon.ico",

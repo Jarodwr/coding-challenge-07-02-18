@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-
+import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
 import SwList from './SwList.js';
 import PersonDetails from './PersonDetails';
-
-import './App.css';
+import {getAllPeople, getPerson} from './ApiWrapper';
 
 const styles = {
   root: {
@@ -19,11 +17,16 @@ const styles = {
     width: "100%",
     margin: 0,
   },
+  title: {
+    textAlign: "center",
+    boxSizing: "border-box",
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
   paper: {
     boxSizing: "border-box",
     paddingTop: 16,
     paddingBottom: 16,
-    marginTop: 16,
   }
 }
 
@@ -34,57 +37,41 @@ class App extends Component {
       people: [],
       person: null,
       viewingPerson: false,
+      error: {
+        open: false,
+        message: "",
+      }
     }
-    this.getPeople = this.getPeople.bind(this);
     this.displayUser = this.displayUser.bind(this);
     this.closeUserDialog = this.closeUserDialog.bind(this);
   }
 
   componentDidMount() {
-    this.getPeople()
+    getAllPeople((people) => this.setState({
+      people: [...people],
+    }));
   }
 
   displayUser(index) {
     this.setState({
       viewingPerson: true,
-    })
-
-    fetch('/api/people/' + index)
-    .then((response)=>response.json())
-    .then((responseJson) => {
-      this.setState({
-        person: {
-          given_name: responseJson.given_name,
-          height: responseJson.height,
-          hair_color: responseJson.hair_color,
-          birth_year: responseJson.birth_year,
-          homeworld_name: responseJson.homeworld_name,
-          films: responseJson.films,
-        },
-      });
-      this.forceUpdate();
     });
+    getPerson(this.state.people[index].id, (person => this.setState({
+      person: {
+        given_name: person.given_name,
+        height: person.height,
+        hair_color: person.hair_color,
+        birth_year: person.birth_year,
+        homeworld_name: person.homeworld_name,
+        film_names: person.film_names,
+      },
+    })));
   }
 
   closeUserDialog(index) {
     this.setState({
       person: null,
       viewingPerson: false,
-    })
-  }
-
-  getPeople() {
-    var people = [];
-    fetch('/api/people/all')
-    .then((response)=>response.json())
-    .then((responseJson) => {
-      responseJson.forEach(function(element) {
-        people.push({
-          given_name: element.given_name,
-        });
-      });
-      this.setState({people: people});
-      this.forceUpdate();
     });
   }
 
@@ -100,6 +87,22 @@ class App extends Component {
           direction="row"
           justify="center"
         >
+          <Grid 
+            container 
+            className={classes.grid}
+            spacing={24}
+            alignItems="center"
+            direction="row"
+            justify="center"
+          >
+            <Grid item xs={12} md={8} lg={6}>
+              <Paper className={classes.title} elevation={4}>
+                <Typography variant="title" >
+                  Star Wars API Viewer
+                </Typography>
+              </Paper>
+            </Grid>
+          </Grid>
           <Grid item xs={12} md={8} lg={6}>
             <Paper className={classes.paper} elevation={4}>
               <SwList
@@ -107,13 +110,13 @@ class App extends Component {
                 handleListItemSelect={this.displayUser.bind(this)}
               />
             </Paper>
-            <PersonDetails
-              person={this.state.person}
-              open={this.state.viewingPerson}
-              handleClose={this.closeUserDialog}
-            />
           </Grid>
         </Grid>
+        <PersonDetails
+          person={this.state.person}
+          open={this.state.viewingPerson}
+          handleClose={this.closeUserDialog}
+        />
       </div>
     );
   }
