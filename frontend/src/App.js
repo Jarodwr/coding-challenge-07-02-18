@@ -42,17 +42,18 @@ class App extends Component {
         message: "",
       }
     }
-    this.displayUser = this.displayUser.bind(this);
+    this.displayUser = this.openUserDialog.bind(this);
     this.closeUserDialog = this.closeUserDialog.bind(this);
   }
 
+  //On mount, request all people and load it into state
   componentDidMount() {
     getAllPeople((people) => this.setState({
       people: [...people],
     }));
   }
 
-  displayUser(index) {
+  openUserDialog(index) {
     this.setState({
       viewingPerson: true,
     });
@@ -107,7 +108,7 @@ class App extends Component {
             <Paper className={classes.paper} elevation={4}>
               <SwList
                 characterList={this.state.people}
-                handleListItemSelect={this.displayUser.bind(this)}
+                handleListItemSelect={this.openUserDialog.bind(this)}
               />
             </Paper>
           </Grid>
