@@ -14,6 +14,7 @@ const styles = {
   }
 }
 
+//Main list component, takes a list of names and ids
 const SwList = (props) => {
   const {classes} = props;
   let content = {};

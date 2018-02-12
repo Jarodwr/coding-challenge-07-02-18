@@ -27,7 +27,7 @@ function Transition(props) {
 }
 
 //Small helper function
-function generateListItem(primary, secondary) {
+export function generateListItem(primary, secondary) {
   return (
     <ListItem>
       <ListItemText
@@ -38,6 +38,7 @@ function generateListItem(primary, secondary) {
   )
 }
 
+//Used for displaying the details of a person using material-ui dialog popup
 const PersonDetails = (props) => {
   var {classes} = props;
   let content = (
