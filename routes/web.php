@@ -13,10 +13,7 @@
 
 $router->group(['prefix' => '/api'], function() use ($router) {
     $router->group(['prefix' => '/people'], function() use ($router) {
-        $router->group(['prefix' => '/all'], function() use ($router) {
-            $router->get('/', 'ApiController@getAllPeople'); 
-            $router->get('/{page}', 'ApiController@getPageOfPeople');
-        });
+        $router->get('/all', 'ApiController@getAllPeople'); 
         $router->get('/{id}', 'ApiController@getPerson');
     });
 });

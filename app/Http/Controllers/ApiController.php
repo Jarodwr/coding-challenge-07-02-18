@@ -4,33 +4,24 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-
-    private $apiWrapper;
+    private $api_wrapper;
 
     public function __construct()
     {
-        $this->apiWrapper = new \App\SwapiWrapper\SwapiWrapper();
-    }
-    
-    //Getting a page of people
-    public function getPageOfPeople(Request $request, $page) 
-    {
-        $page_object = $this->apiWrapper->getPageOfPeople($page);
-        $page_of_people = $this->parseListOfPeople($page_object->{"results"});
-        return response()->json($page_of_people);
+        $this->api_wrapper = new \App\SwapiWrapper\SwapiWrapper();
     }
 
     //Getting all people
     public function getAllPeople(Request $request) 
     {
-        $all_people = $this->parseListOfPeople($this->apiWrapper->getAllPeople());
+        $all_people = $this->parseListOfPeople($this->api_wrapper->getAllPeople());
         return response()->json($all_people);
     }
 
     //Getting info on specific people
     public function getPerson(Request $request, $id) 
     {
-        $person = $this->apiWrapper->getPerson($id);
+        $person = $this->api_wrapper->getPerson($id);
         return response()->json($person);
     }
 
@@ -45,5 +36,9 @@ class ApiController extends Controller
             return $person;
         }, 
         $list);
+    }
+
+    public function changeWrapper($wrapper) {
+        $this->api_wrapper = $wrapper;
     }
 }

@@ -52,13 +52,5 @@ class SwapiWrapper implements \App\SwapiWrapper\ApiWrapperInterface
         }
         return $all_people;
     }
-
-    public function getPageOfPeople($page)
-    {
-        $client = new \GuzzleHttp\Client();
-        $api_path = self::APIPATH."people/?page=".$page;
-        $response = $client->request('GET', $api_path, []);
-        return json_decode($response->getBody());
-    }
 }
 ?>
